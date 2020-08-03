@@ -1,0 +1,7 @@
+# Project exclude paths
+/shop-api/target/
+/shop-comman/target/
+/shop-mapper/target/
+/shop-pojo/target/
+/shop-service/target/
+/target/
