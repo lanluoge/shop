@@ -17,5 +17,6 @@
             <artifactId>shop-mapper</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+
     </dependencies>
 </project>
