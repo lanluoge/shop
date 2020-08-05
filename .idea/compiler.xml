@@ -8,9 +8,9 @@
         <outputRelativeToContentRoot value="true" />
         <module name="shopcomman" />
         <module name="shopmapper" />
-        <module name="shoppojo" />
         <module name="shopapi" />
         <module name="shopservice" />
+        <module name="shoppojo" />
       </profile>
     </annotationProcessing>
   </component>
