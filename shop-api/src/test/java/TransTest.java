@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest(classes = ShopSpringBootApplication.class)
+//@RunWith(SpringRunner.class)
+//@SpringBootTest(classes = ShopSpringBootApplication.class)
 public class TransTest {
 
     @Autowired
@@ -38,7 +38,7 @@ public class TransTest {
      *              如果主事务回滚，则子事务会一起回滚。相反，子事务异常，则父事务可以回滚或不回滚。
      *              举例：领导决策不对，老板怪罪，领导带着小弟一同受罪。小弟出了差错，领导可以推卸责任。
      */
-    @Test
+//    @Test
     public void myTest() {
 //
         testTransService.testPropagationTrans();
