@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * 
- * @Title: IMOOCJSONResult.java
+ * @Title: JSONResult.java
  * @Package com.imooc.utils
  * @Description: 自定义响应数据结构
  * 				本类可提供给 H5/ios/安卓/公众号/小程序 使用
