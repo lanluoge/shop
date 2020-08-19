@@ -9,10 +9,10 @@ import java.util.List;
 /**
  * 
  * @Title: JsonUtils.java
- * @Package com.imooc.utils
+ * @Package com.lan.utils
  * @Description: json转换类
  * Copyright: Copyright (c)
- * Company: www.imooc.com
+ * Company: com.lan.com
  * 
  * @author imooc
  */
