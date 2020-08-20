@@ -13,6 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -61,14 +62,12 @@ public class PassportController {
     public JSONResult login(@RequestBody UserBO userBO,
                             HttpServletRequest request,
                             HttpServletResponse response) throws Exception {
-
         //1.用户名 密码不能为空
         String username=userBO.getUsername();
         String password=userBO.getPassword();
         if(StringUtils.isBlank(username)||StringUtils.isBlank(password)){
             return JSONResult.errorMsg("用户名或密码不能为空");
         }
-
         Users usersRes = usersService.queryUserForlogin(username, MD5Utils.getMD5Str(password));
         if (usersRes==null){
             return JSONResult.errorMsg("用户名或密码错误");
@@ -77,6 +76,14 @@ public class PassportController {
         CookieUtils.setCookie(request,response,"user", JsonUtils.objectToJson(usersRes),true);
         return JSONResult.ok(usersRes);
     }
+
+    @PostMapping("/logout")
+    @ApiOperation(value = "退出账号",notes = "退出并清除cookie",httpMethod = "GET")
+    public JSONResult logout(HttpServletRequest request,HttpServletResponse response) {
+        CookieUtils.deleteCookie(request, response, "user");
+        return JSONResult.ok();
+    }
+
 
     private Users setNullProperty(Users usersRes){
         usersRes.setPassword(null);

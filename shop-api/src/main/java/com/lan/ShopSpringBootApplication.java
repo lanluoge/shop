@@ -11,6 +11,7 @@ import tk.mybatis.spring.annotation.MapperScan;
 @ComponentScan(value = {"com.lan","org.n3r.idworker"})
 public class ShopSpringBootApplication {
     public static void main(String[] args) {
-        SpringApplication.run(ShopSpringBootApplication.class,args);
+        SpringApplication.run(ShopSpringBootApplication.class, args);
     }
+
 }
