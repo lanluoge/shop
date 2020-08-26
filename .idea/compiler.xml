@@ -6,13 +6,13 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="shop-mapper" />
+        <module name="shoppojo" />
         <module name="shopmapper" />
         <module name="shop-service" />
         <module name="shop-api" />
-        <module name="shopapi" />
-        <module name="shoppojo" />
         <module name="shop-comman" />
+        <module name="shop-mapper" />
+        <module name="shopapi" />
         <module name="shop-pojo" />
         <module name="shopcomman" />
         <module name="shopservice" />
