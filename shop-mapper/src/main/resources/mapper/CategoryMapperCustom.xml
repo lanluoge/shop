@@ -2,15 +2,28 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.lan.mapper.CategoryMapperCustom" >
 
-    <select id="getSubCatList" parameterType="int">
+	<resultMap id="myCategoryVO" type="com.lan.vo.CategoryVO">
+		<id  column="id" property="id"></id>
+		<result column="name" property="name"></result>
+		<result column="type" property="type"></result>
+		<result column="fatherId" property="fatherId"></result>
+		<collection property="subCatList" ofType="com.lan.vo.SubCategoryVO">
+			<id column="subId" property="subId"></id>
+			<id column="subName" property="subName"></id>
+			<id column="subType" property="subType"></id>
+			<id column="subFatherId" property="subFatherId"></id>
+		</collection>
+	</resultMap>
+    <select id="getSubCatList" parameterType="int" resultMap="myCategoryVO">
         SELECT
 		f.id AS id,
 		f.`name` AS `name`,
 		f.type AS type,
+		f.father_id as fatherId ,
 		c.id as subId,
 		c.`name` as subName,
-		c.type as subType
-
+		c.type as subType,
+		c.father_id as subFatherId
 		FROM
 			category f
 			left JOIN category c

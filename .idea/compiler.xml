@@ -11,10 +11,10 @@
         <module name="shop-service" />
         <module name="shop-api" />
         <module name="shopapi" />
-        <module name="shopcomman" />
+        <module name="shoppojo" />
         <module name="shop-comman" />
         <module name="shop-pojo" />
-        <module name="shoppojo" />
+        <module name="shopcomman" />
         <module name="shopservice" />
       </profile>
     </annotationProcessing>
