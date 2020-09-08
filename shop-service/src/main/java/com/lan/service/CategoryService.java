@@ -2,6 +2,7 @@ package com.lan.service;
 
 import com.lan.pojo.Category;
 import com.lan.vo.CategoryVO;
+import com.lan.vo.NewItemsVO;
 
 import java.util.List;
 
@@ -21,4 +22,10 @@ public interface CategoryService {
      * @return
      */
     List<CategoryVO>  getSubCatList(Integer rootFatherId);
+
+    /**
+     * 根据一级分类id查询子目录
+     * @return
+     */
+    List<NewItemsVO>  getSixNewItemsLazy(Integer rootCatId);
 }

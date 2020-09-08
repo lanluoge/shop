@@ -14,6 +14,7 @@
 			<id column="subFatherId" property="subFatherId"></id>
 		</collection>
 	</resultMap>
+
     <select id="getSubCatList" parameterType="int" resultMap="myCategoryVO">
         SELECT
 		f.id AS id,
@@ -29,5 +30,41 @@
 			left JOIN category c
 			on c.father_id =f.id
 		where f.father_id=#{fatherId}
+    </select>
+	<resultMap id="myNewItemsVO" type="com.lan.vo.NewItemsVO">
+		<id  column="rootCatId" property="rootCatId"></id>
+		<result column="slogan" property="slogan"></result>
+		<result column="rootCatName" property="rootCatName"></result>
+		<result column="bgColor" property="bgColor"></result>
+		<result column="catImage" property="catImage"></result>
+
+		<collection property="simpleItemList" ofType="com.lan.vo.SimpleItemVO">
+			<id  column="itemId" property="itemId"></id>
+			<result column="itemName" property="itemName"></result>
+			<result column="itemUrl" property="itemUrl"></result>
+		</collection>
+	</resultMap>
+	<select id="getNewSixItemsLazy" parameterType="map" resultMap="myNewItemsVO">
+		SELECT
+			f.id AS rootCatId,
+			f.slogan AS slogan,
+			f.`name` AS rootCatName,
+			f.bg_color AS bgColor,
+			f.cat_image AS catImage,
+			i.id AS itemId,
+			i.item_name AS itemName,
+			ii.url AS itemUrl,
+			i.created_time AS createdTime
+		FROM
+			category f
+			LEFT JOIN items i ON f.id = i.root_cat_id
+			LEFT JOIN items_img ii ON i.id = ii.item_id
+		WHERE
+			f.type = 1
+			AND i.root_cat_id = #{paramsMap.rootCatId}
+			AND ii.is_main = 1
+		ORDER BY
+			i.created_time DESC
+			LIMIT 0,6
     </select>
 </mapper>

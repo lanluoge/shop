@@ -7,6 +7,7 @@ import com.lan.service.CarouselService;
 import com.lan.service.CategoryService;
 import com.lan.utils.JSONResult;
 import com.lan.vo.CategoryVO;
+import com.lan.vo.NewItemsVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,12 +44,23 @@ public class IndexController {
     }
 
     @GetMapping("/subCat/{FatherId}")
-    @ApiOperation(value = "查询父级目录",notes = "查询父级目录",httpMethod = "GET")
+    @ApiOperation(value = "查询商品子分类",notes = "查询父级目录",httpMethod = "GET")
     public JSONResult  subCat(@PathVariable Integer FatherId){
         if (FatherId==null){
             return JSONResult.errorMsg("父ID不能为空");
         }
         List<CategoryVO> subCatList = categoryService.getSubCatList(FatherId);
+        return JSONResult.ok(subCatList);
+    }
+
+
+    @GetMapping("/sixNewItems/{rootCatId}")
+    @ApiOperation(value = "查询一级分类下最新6条数据",notes = "查询一级分类下最新6条数据",httpMethod = "GET")
+    public JSONResult  sixNewItems(@PathVariable Integer rootCatId){
+        if (rootCatId==null){
+            return JSONResult.errorMsg("分类不存在");
+        }
+        List<NewItemsVO> subCatList = categoryService.getSixNewItemsLazy(rootCatId);
         return JSONResult.ok(subCatList);
     }
 }

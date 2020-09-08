@@ -5,6 +5,8 @@ import com.lan.pojo.Carousel;
 import com.lan.service.CarouselService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.List;
@@ -17,6 +19,7 @@ import java.util.List;
 public class CarouselServiceImpl implements CarouselService {
     @Autowired
     CarouselMapper carouselMapper;
+    @Transactional(propagation = Propagation.SUPPORTS)
     @Override
     public List<Carousel> queryAll(Integer isShow) {
 
