@@ -1,16 +1,10 @@
 package com.lan.service.impl;
 
-import com.lan.mapper.ItemsImgMapper;
-import com.lan.mapper.ItemsMapper;
-import com.lan.mapper.ItemsParamMapper;
-import com.lan.mapper.ItemsSpecMapper;
-import com.lan.pojo.Items;
-import com.lan.pojo.ItemsImg;
-import com.lan.pojo.ItemsParam;
-import com.lan.pojo.ItemsSpec;
+import com.lan.enums.CommentsLevel;
+import com.lan.mapper.*;
+import com.lan.pojo.*;
 import com.lan.service.ItemService;
-import com.lan.service.StuService;
-import com.lan.service.TestService;
+import com.lan.vo.ItemCommentsLevelCountVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -33,6 +27,10 @@ public class ItemServiceImpl implements ItemService {
 
     @Autowired
     ItemsParamMapper itemsParamMapper;
+
+    @Autowired
+    ItemsCommentsMapper itemsCommentsMapper;
+
     @Transactional(propagation = Propagation.SUPPORTS)
     @Override
     public Items queryByItemsId(String  itemId) {
@@ -64,5 +62,31 @@ public class ItemServiceImpl implements ItemService {
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("itemId",itemId);
         return itemsParamMapper.selectOneByExample(example);
+    }
+
+    @Transactional(propagation = Propagation.SUPPORTS)
+    @Override
+    public ItemCommentsLevelCountVO queryCommentCounts(String itemId) {
+        Integer goodCount = getCommentsCount(itemId,CommentsLevel.GOOD.type);
+        Integer badCount = getCommentsCount(itemId,CommentsLevel.BAD.type);
+        Integer normalCount = getCommentsCount(itemId,CommentsLevel.NORMAL.type);
+        Integer  totalCount = goodCount + badCount + normalCount;
+
+        ItemCommentsLevelCountVO itemCommentsLevelCountVO = new ItemCommentsLevelCountVO();
+        itemCommentsLevelCountVO.setBadCounts(badCount);
+        itemCommentsLevelCountVO.setGoodCounts(goodCount);
+        itemCommentsLevelCountVO.setNormalCounts(normalCount);
+        itemCommentsLevelCountVO.setTotalCounts(totalCount);
+        return itemCommentsLevelCountVO;
+    }
+
+    Integer getCommentsCount(String  itemId,Integer level){
+        ItemsComments condition=new ItemsComments();
+        condition.setItemId(itemId);
+        if (level!=null){
+            condition.setCommentLevel(level);
+        }
+        return itemsCommentsMapper.selectCount(condition);
+
     }
 }
