@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lan.mapper.ItemsMapperCustom">
+
+    <select id="queryItemsComments"  parameterType="map" resultType="com.lan.vo.ItemCommentVO">
+        SELECT
+			ic.sepc_name AS specName,
+			ic.content AS content,
+			ic.comment_level AS commentLevel,
+			ic.created_time AS createTime,
+			u.nickname AS nickname,
+			u.face AS userFace
+		FROM
+			items_comments ic
+			LEFT JOIN users u ON ic.user_id = u.id
+		WHERE
+			ic.item_id = #{paramsMap.itemId}
+		<if test="paramsMap.level!=null and paramsMap.level!='' ">
+			and ic.comment_level=#{paramsMap.level}
+		</if>
+
+    </select>
+	<select id="queryItemsByKeyword"  parameterType="map" resultType="com.lan.vo.SearchItemsVO">
+		select
+			i.id as itemId,
+			i.item_name as itemName,
+			i.sell_counts as sellCounts,
+			ii.url as imgUrl,
+			itemSpec.minPrice as price
+		from items i
+		left join items_img ii on i.id=ii.item_id
+		left join (select item_id as itemId,MIN(price_discount) as  minPrice from items_spec  GROUP BY item_id)   itemSpec on i.id=itemSpec.itemId
+		where
+			ii.is_main=1
+			<if test="paramsMap.keywords != null  and paramsMap.keywords!=''">
+				and	i.item_name like '%${paramsMap.keywords}%'
+			</if>
+			order  by
+		<!-- k: 默认，代表默认排序，根据name-->
+		<!-- c: 根据销量排序-->
+		<!-- p: 根据价格排序-->
+			<choose>
+				<when test="paramsMap.sort== &quot;c&quot;">
+					i.sell_counts desc
+				</when>
+				<when test="paramsMap.sort==&quot;p&quot;">
+					itemSpec.minPrice	asc
+				</when>
+				<otherwise>
+					i.item_name asc
+				</otherwise>
+			</choose>
+
+	</select>
+	<select id="queryItemsByThirdCat"  parameterType="map" resultType="com.lan.vo.SearchItemsVO">
+		select
+		i.id as itemId,
+		i.item_name as itemName,
+		i.sell_counts as sellCounts,
+		ii.url as imgUrl,
+		itemSpec.minPrice as price
+		from items i
+		left join items_img ii on i.id=ii.item_id
+		left join (select item_id as itemId,MIN(price_discount) as  minPrice from items_spec  GROUP BY item_id)   itemSpec on i.id=itemSpec.itemId
+		where
+		ii.is_main=1
+		and i.cat_id=#{paramsMap.catId}
+		order  by
+		<!-- k: 默认，代表默认排序，根据name-->
+		<!-- c: 根据销量排序-->
+		<!-- p: 根据价格排序-->
+		<choose>
+			<when test="paramsMap.sort== &quot;c&quot;">
+				i.sell_counts desc
+			</when>
+			<when test="paramsMap.sort==&quot;p&quot;">
+				itemSpec.minPrice	asc
+			</when>
+			<otherwise>
+				i.item_name asc
+			</otherwise>
+		</choose>
+
+	</select>
+	<select id="queryItemsBySpecIds"  parameterType="list" resultType="com.lan.vo.ShopcartVO">
+		SELECT
+			i.id AS itemId,
+			ii.url AS itemImgUrl,
+			i.item_name AS itemName,
+			ispec.id AS specId,
+			ispec.NAME AS specName,
+			ispec.price_discount AS priceDiscount,
+			ispec.price_normal AS priceNormal
+		FROM
+			items_spec ispec
+				LEFT JOIN items_img ii ON ispec.item_id = ii.item_id
+				LEFT JOIN items i  ON ispec.item_id=i.id
+		where ii.is_main=1
+
+		AND ispec.id IN
+		<foreach collection="specIdsList" separator="," open="(" close=")" item="specId">
+			#{specId}
+		</foreach>
+	</select>
+</mapper>

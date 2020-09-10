@@ -42,9 +42,12 @@ spring:
 mybatis:
   type-aliases-package: com.lan.pojo          # 所有POJO类所在包路径
   mapper-locations: classpath:mapper/*.xml      # mapper映射文件
-#  configuration:
-#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
-
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+# 分页插件配置
+pagehelper:
+  helperDialect: mysql
+  supportMethodsArguments: true
 ############################################################
 #
 # mybatis mapper 配置

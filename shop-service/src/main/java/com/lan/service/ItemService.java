@@ -1,7 +1,10 @@
 package com.lan.service;
 
 import com.lan.pojo.*;
+import com.lan.utils.PagedGridResult;
+import com.lan.vo.ItemCommentVO;
 import com.lan.vo.ItemCommentsLevelCountVO;
+import com.lan.vo.ShopcartVO;
 
 import java.util.List;
 
@@ -41,5 +44,36 @@ public interface ItemService {
      * @return
      */
     ItemCommentsLevelCountVO queryCommentCounts(String  itemId);
+
+
+    /**
+     *  根据商品id查询商品的评价
+     * @param itemId
+     * @return
+     */
+    PagedGridResult queryComments(String  itemId, Integer level, Integer page, Integer pageSize);
+
+    /**
+     *  根据关键字查询商品
+     * @param keywords
+     * @return
+     */
+    PagedGridResult queryItemsByKeywords(String  keywords, String sort, Integer page, Integer pageSize);
+
+
+    /**
+     *  根据三级目录id查询商品
+     * @param catId
+     * @return
+     */
+    PagedGridResult queryItemsByThirdCat(Integer  catId, String sort, Integer page, Integer pageSize);
+
+
+    /**
+     *  根据规格id查询最新购物车中的商品数据（用于渲染购物车）
+     * @param specIds
+     * @return
+     */
+    List<ShopcartVO> queryItemsBySpecIds(String specIds);
 
 }
