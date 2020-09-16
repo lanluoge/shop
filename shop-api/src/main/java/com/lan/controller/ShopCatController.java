@@ -42,8 +42,7 @@ public class ShopCatController {
             @RequestParam String userId,
             @RequestParam String itemSpecId,
             HttpServletRequest request,
-            HttpServletResponse response
-    ) {
+            HttpServletResponse response) {
 
         if (StringUtils.isBlank(userId) || StringUtils.isBlank(itemSpecId)) {
             return JSONResult.errorMsg("参数不能为空");

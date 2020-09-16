@@ -13,7 +13,6 @@ import com.lan.vo.ShopcartVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import io.swagger.models.auth.In;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -68,7 +67,6 @@ public class ItemsContrlloer extends BaseController{
         }
 
         ItemCommentsLevelCountVO itemCommentsLevelCountVO = itemService.queryCommentCounts(itemId);
-
         return  JSONResult.ok(itemCommentsLevelCountVO);
     }
 
@@ -162,9 +160,7 @@ public class ItemsContrlloer extends BaseController{
         if (StringUtils.isBlank(itemSpecIds)){
             return JSONResult.ok();
         }
-
         List<ShopcartVO> itemsSpecs = itemService.queryItemsBySpecIds(itemSpecIds);
-
         return  JSONResult.ok(itemsSpecs);
     }
 }

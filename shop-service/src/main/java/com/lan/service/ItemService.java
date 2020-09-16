@@ -1,8 +1,10 @@
 package com.lan.service;
 
-import com.lan.pojo.*;
+import com.lan.pojo.Items;
+import com.lan.pojo.ItemsImg;
+import com.lan.pojo.ItemsParam;
+import com.lan.pojo.ItemsSpec;
 import com.lan.utils.PagedGridResult;
-import com.lan.vo.ItemCommentVO;
 import com.lan.vo.ItemCommentsLevelCountVO;
 import com.lan.vo.ShopcartVO;
 
@@ -75,5 +77,27 @@ public interface ItemService {
      * @return
      */
     List<ShopcartVO> queryItemsBySpecIds(String specIds);
+
+
+    /**
+     * 根据商品规格id获取规格对象的具体信息
+     * @param specId
+     * @return
+     */
+    public ItemsSpec queryItemSpecById(String specId);
+
+    /**
+     * 根据商品id获得商品图片主图url
+     * @param itemId
+     * @return
+     */
+    public String queryItemMainImgById(String itemId);
+
+    /**
+     * 减少库存
+     * @param specId
+     * @param buyCounts
+     */
+    public void decreaseItemSpecStock(String specId, int buyCounts);
 
 }
