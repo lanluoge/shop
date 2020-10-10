@@ -1,5 +1,9 @@
 package com.lan.controller;
 
+import com.lan.pojo.Orders;
+import com.lan.service.center.MyOrdersService;
+import com.lan.utils.JSONResult;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 /**
@@ -16,4 +20,18 @@ public class BaseController {
     // 微信支付成功 -> 支付中心 -> 天天吃货平台
     //                       |-> 回调通知的url
     String payReturnUrl = "http://cuhnsd.natappfree.cc/orders/notifyMerchantOrderPaid";
+
+    @Autowired
+    public MyOrdersService myOrdersService;
+    /**
+     * 用于验证用户和订单是否有关联关系，避免非法用户调用
+     * @return
+     */
+    public JSONResult checkUserOrder(String userId, String orderId) {
+        Orders order = myOrdersService.queryMyOrder(userId, orderId);
+        if (order == null) {
+            return JSONResult.errorMsg("订单不存在！");
+        }
+        return JSONResult.ok(order);
+    }
 }
