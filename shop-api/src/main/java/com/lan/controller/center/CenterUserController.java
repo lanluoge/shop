@@ -58,7 +58,7 @@ public class CenterUserController extends BaseController {
 //        String fileSpace = IMAGE_USER_FACE_LOCATION;
         String fileSpace = fileUpload.getImageUserFaceLocation();
         // 在路径上为每一个用户增加一个userid，用于区分不同用户上传
-        String uploadPathPrefix = File.separator + userId;
+        String uploadPathPrefix = "/" + userId;
 
         // 开始文件上传
         if (file != null) {

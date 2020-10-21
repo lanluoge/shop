@@ -1,21 +1,18 @@
-import com.lan.ShopSpringBootApplication;
-import com.lan.service.StuService;
-import com.lan.service.TestService;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 //@RunWith(SpringRunner.class)
 //@SpringBootTest(classes = ShopSpringBootApplication.class)
 public class TransTest {
 
-    @Autowired
+   /* @Autowired
     private StuService stuService;
 
     @Autowired
-    private TestService testTransService;
+    private TestService testTransService;*/
     /**
      * 事务传播 - Propagation
      *      REQUIRED: 使用当前的事务，如果当前没有事务，则自己新建一个事务，子方法是必须运行在一个事务中的；
@@ -38,10 +35,47 @@ public class TransTest {
      *              如果主事务回滚，则子事务会一起回滚。相反，子事务异常，则父事务可以回滚或不回滚。
      *              举例：领导决策不对，老板怪罪，领导带着小弟一同受罪。小弟出了差错，领导可以推卸责任。
      */
-//    @Test
+    @Test
     public void myTest() {
 //
-        testTransService.testPropagationTrans();
+//        testTransService.testPropagationTrans();
+        ArrayList<Integer>  listParent=new ArrayList<>();
+        listParent.add(1);
+        listParent.add(2);
+        listParent.add(3);
+        listParent.add(4);
+        listParent.add(6);
+        List<Integer> tempList = listParent.stream().filter(c -> c==1||c==3).collect(Collectors.toList());
+        System.out.println(tempList);
     }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
