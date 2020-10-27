@@ -2,20 +2,30 @@ package com.lan.controller;
 
 import com.lan.bo.ShopcartBO;
 import com.lan.utils.JSONResult;
+import com.lan.utils.JsonUtils;
+import com.lan.utils.RedisOperator;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author xuminghao
  * @create 2020-09-10 15:14
  */
-public class ShopCatController {
+@RestController
+@RequestMapping("/shopcart")
+public class ShopCatController extends  BaseController{
+
+    @Autowired
+    private RedisOperator redisOperator;
+
+
     @ApiOperation(value = "添加商品到购物车", notes = "添加商品到购物车", httpMethod = "POST")
     @PostMapping("/add")
     public JSONResult add(
@@ -32,6 +42,29 @@ public class ShopCatController {
         System.out.println(shopcartBO);
 
         // TODO 前端用户在登录的情况下，添加商品到购物车，会同时在后端同步购物车到redis缓存
+        //需要判断有没有已经存在，如果已经存在需要累加数量
+        String shopcartJson = redisOperator.get(FOODIE_SHOPCART + ":" + userId);
+        List<ShopcartBO> shopcartList=null;
+        if (StringUtils.isNotBlank(shopcartJson)){
+            boolean isHaving=false;
+            shopcartList = JsonUtils.jsonToList(shopcartJson, ShopcartBO.class);
+            for (ShopcartBO sc : shopcartList) {
+                String specId = sc.getSpecId();
+                if (specId.equals(shopcartBO.getSpecId())){
+                    isHaving=true;
+                    sc.setBuyCounts(sc.getBuyCounts()+shopcartBO.getBuyCounts());
+                }
+            }
+            if (!isHaving){
+                shopcartList.add(shopcartBO);
+            }
+        }else {
+            shopcartList=new ArrayList<>();
+            shopcartList.add(shopcartBO);
+        }
+
+        //覆盖
+        redisOperator.set(FOODIE_SHOPCART+":"+userId,JsonUtils.objectToJson(shopcartList));
 
         return JSONResult.ok();
     }
